@@ -1,0 +1,188 @@
+I used MongoDB Compass for my aggregation query
+QUESTION 1
+$match
+{
+  name: /.*Reg.*/i,
+}
+$project
+{
+    restaurant_id: 1,
+    name: 1,
+    borough: 1,
+    cuisine: 1,
+}
+
+QUESTION 2
+$match
+{
+    borough: "Bronx",
+}
+$project
+{
+    cuisine: "American",
+    cuisine: "chinese",
+}
+
+QUESTION 3
+$match
+{
+  borough: {
+    $in: [
+      "Staten Island",
+      "Queens",
+      "Bronx",
+      "Brooklyn",
+    ],
+  },
+}
+$project
+{
+  restaurant_id: 1,
+  name: 1,
+  borough: 1,
+  cuisine: 1,
+}
+
+QUESTION 4
+$match
+{
+  borough: {
+    $nin: [
+      "Staten Island",
+      "Queens",
+      "Bronx",
+      "Brooklyn",
+    ],
+  },
+}
+$project
+{
+  restaurant_id: 1,
+  name: 1,
+  borough: 1,
+  cuisine: 1,
+}
+
+QUESTION 5
+$match
+{
+  "grades.score": {
+    $lte: 10,
+  },
+}
+$project
+{
+  restaurant_id: 1,
+  name: 1,
+  borough: 1,
+  cuisine: 1,
+}
+
+QUESTION 6
+$match{
+  $or: [
+    {
+      cuisine: {
+        $nin: ["American", "Chinese"],
+      },
+    },
+    {
+      name: /^Wil/,
+    },
+  ],
+}
+$project
+{
+  restaurant_id: 1,
+  name: 1,
+  borough: 1,
+  cuisine: 1,
+}
+
+QUESTION 7
+$match
+{
+  "grades.date": ISODate("2014-08-11T00:00:00Z"),
+  "grades.grade": "A",
+  "grades.score": 11,
+}
+$project
+{
+  _id: 1,
+  name: 1,
+  grades: {
+    $filter: {
+      input: "$grades",
+      as: "grade",
+      cond: {
+        $and: [
+          {
+            $eq: [
+              "$$grade.date",
+              ISODate("2014-08-11T00:00:00Z"),
+            ],
+          },
+          {
+            $eq: ["$$grade.grade", "A"],
+          },
+          {
+            $eq: ["$$grade.score", 11],
+          },
+        ],
+      },
+    },
+  },
+}
+
+QUESTION 8
+$match
+{
+  "grades.1.grade": "A",
+  "grades.1.score": 9,
+}
+$project
+{
+  restaurant_id: 1,
+  name: 1,
+  grades: 1,
+}
+QUESTION 9
+$match
+{
+  "address.coord.1": {
+    $gt: 42,
+    $lte: 52,
+  },
+}
+$project
+{
+  restaurant_id: 1,
+  name: 1,
+  address: 1,
+}
+
+QUESTION 10
+$sort
+{
+  name: 1,
+}
+$sort
+
+QUESTION 11
+{
+  name: -1,
+}
+
+QUESTION 12
+{
+  cuisine: 1,
+  borough: -1,
+}
+
+QUESTION 13
+$match
+{
+  address: {
+    $not: /street/i,
+  },
+}
